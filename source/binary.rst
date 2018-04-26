@@ -67,7 +67,8 @@ The attributes are defined as follows:
 
     ........ ....0000    Page contains a symbol table index
     ........ ....0001    Page contains symbol table values
-    ........ ....0010    Page contains code
+    ........ ....0010    Page contains a relocations list
+    ........ ....1111    Page contains code
     ........ ....XXXX    Other values are reserved for future use
 
     ........ ...1....    The page can be executed
@@ -90,8 +91,9 @@ source code.
 They are organized to be optimial for a binary search tree so that the names of
 symbols can be looked up from an address as quickly as possible.
 
-The runtime does not directly use this symbol table, but some code will rely on
-this symbol table being loaded into memory for the lookup of symbols.
+The runtime does not directly use this symbol table (except to find the main
+method), but some code will rely on this symbol table being loaded into memory
+for the lookup of symbols.
 One example of this would be to generate stack traces from the addresses
 contained on the stack.
 
@@ -112,3 +114,14 @@ Symbol Table Values Page
 This page contains the strings required for the symbol table, and is just the
 strings ordered as close together as possible, with a null byte (0x00) at the
 end of every string.
+
+Relocations List Page
+^^^^^^^^^^^^^^^^^^^^^
+
+In order for the program still to function when it has been loaded into a random
+memory offset, some values have to be relocated in order for the references to
+work.
+This page provides a series of eight-byte addresses that need to be relocaed
+because the addresses are currently relative to the file and not to the physical
+memory.
+Unused portions of this page are zeroed.
