@@ -104,6 +104,7 @@ The page contains a series of eight-byte addresses followed by an eight-byte
 offset of the start of the string that contains the name of a symbol.
 Those strings should always be stored inside a page marked to be a symbol table
 values page.
+Unused portions of this page are zeroed.
 
 Symbol Table Values Page
 ^^^^^^^^^^^^^^^^^^^^^^^^
