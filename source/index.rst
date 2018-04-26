@@ -7,12 +7,3 @@ Welcome to Zenith's documentation!
    :glob:
 
    *
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
