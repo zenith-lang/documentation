@@ -65,8 +65,9 @@ The attributes are defined as follows:
 
 .. code-block:: none
 
-    ........ ....0000    Page contains a symbol table
-    ........ ....0001    Page contains code
+    ........ ....0000    Page contains a symbol table index
+    ........ ....0001    Page contains symbol table values
+    ........ ....0010    Page contains code
     ........ ....XXXX    Other values are reserved for future use
 
     ........ ...1....    The page can be executed
@@ -80,3 +81,33 @@ The attributes are defined as follows:
 
 Most programs will not require more than one header page, since each header page
 can handle 1920 pages in the body of the program.
+
+Symbol Table
+^^^^^^^^^^^^
+
+The symbol table contains the addresses of all symbols that were in the original
+source code.
+They are organized to be optimial for a binary search tree so that the names of
+symbols can be looked up from an address as quickly as possible.
+
+The runtime does not directly use this symbol table, but some code will rely on
+this symbol table being loaded into memory for the lookup of symbols.
+One example of this would be to generate stack traces from the addresses
+contained on the stack.
+
+Symbol Table Index Page
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The symbol table contains an index that is sorted by address in ascending order
+to allow for binary searching.
+The page contains a series of eight-byte addresses followed by an eight-byte
+offset of the start of the string that contains the name of a symbol.
+Those strings should always be stored inside a page marked to be a symbol table
+values page.
+
+Symbol Table Values Page
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This page contains the strings required for the symbol table, and is just the
+strings ordered as close together as possible, with a null byte (0x00) at the
+end of every string.
