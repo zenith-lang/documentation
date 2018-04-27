@@ -135,3 +135,161 @@ This page provides a series of eight-byte addresses that need to be relocaed
 because the addresses are currently relative to the file and not to the physical
 memory.
 Unused portions of this page are zeroed.
+
+Code Pages
+^^^^^^^^^^
+
+These pages are loaded directly into memory after the relocations have been
+processed.
+The compiled bytecode is stored primarily inside these pages, and these will
+account for the largest amount of pages that a binary program uses.
+
+Instructions are put in this section with no padding, since the symbols
+addresses are already defined in the symbol tables.
+
+Stack Instructions
+^^^^^^^^^^^^^^^^^^
+
+Stack push and pop instructions are the only instructions in the Zenith language
+that take arguments, so they are stored in the bytecode in a different way.
+The arguments are located directly after the opcode in the binary file.
+
+====== ================ ======================= ========================================================================
+Opcode Instruction Name Argument Length (bytes) Description
+====== ================ ======================= ========================================================================
+01     push             8                       Stores the value at the specified address to the top of the stack.
+02     push_l           8                       Stores the literal value to the top of the stack.
+03     push_i           4                       Stores the literal value to the top of the stack.
+04     push_s           2                       Stores the literal value to the top of the stack.
+05     push_b           1                       Stores the literal value to the top of the stack.
+08     pop              8                       Stores the top of the stack in the specified address.
+09     ingore           0                       Removes the value at the top of the stack.
+0C     dup              0                       Duplicates the top value of the stack.
+0D     dupn             1                       Duplicates the value a specified depth down to the top of the stack.
+====== ================ ======================= ========================================================================
+
+Arithmetic Instructions
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Arithmetic instructions all consume the top two values from the stack, and
+return the value as a single value onto the top of the stack, with the exception
+of the 'divmod' instruction, which returns the remainder at the top of the stack
+and the quotient at the second to the top value on the stack.
+All division is rounded down.
+
+====== ================
+Opcode Instruction Name
+====== ================
+10     add
+11     sub
+12     mul
+13     div
+14     mod
+15     divmod
+====== ================
+
+Bitwise Instructions
+^^^^^^^^^^^^^^^^^^^^
+
+The following instructions all consume the top two values from the stack, and
+return the value as a single value onto the top of the stack.
+
+====== ================
+Opcode Instruction Name
+====== ================
+20     or
+21     and
+22     xor
+24     nor
+25     nand
+26     xnor
+27     not
+====== ================
+
+The following instructions take the amount to shift as the second value from the
+top of the stack, and the value to shift with as the top value.
+They also return a single value on the top of the stack.
+
+====== ================
+Opcode Instruction Name
+====== ================
+28     shiftl
+29     shiftr
+====== ================
+
+Branching Instructions
+^^^^^^^^^^^^^^^^^^^^^^
+
+With the exception of 'jump', all of these instructions will compare the second
+value from the top of the stack to zero with the condition defined, and will
+only branch if the condition is true.
+All of these instructions expect the top value of the stack to be the address in
+memory to jump to.
+
+====== ================ ========================
+Opcode Instruction Name Condition
+====== ================ ========================
+31     jump_eq          Equal
+32     jump_lt          Less than
+33     jump_le          Less than or equal to
+34     jump_gt          Greater than
+35     jump_ge          Greater than or equal to
+36     jump_ne          Not equal
+37     jump             Always
+====== ================ ========================
+
+Pointer Instructions
+^^^^^^^^^^^^^^^^^^^^
+
+The 'ref' instruction stores the address of the top of the stack to the new top
+of the stack.
+Since it adds a new value to the stack, it will actually point to the value
+second from the top of the stack by the time the instruction is complete.
+
+The 'pcref' instruction stores the address of the top of the call stack to the
+top of the value stack.
+
+The 'deref' instruction stores the value of the memory at the address given by
+the top value on the stack over the top value of the stack.
+
+====== ================
+Opcode Instruction Name
+====== ================
+40     ref
+41     pcref
+42     deref
+====== ================
+
+Function Instructions
+^^^^^^^^^^^^^^^^^^^^^
+
+These functions modify the call stack to allow functions to be implemented and
+used.
+
+The 'call' instruction stores the address of the next instruction onto the top
+of the call stack, then jumps to the address in the top value of the value
+stack, and removes that value.
+
+The 'ret' instruction jumps to the address on the top of the call stack, then
+removes that entry.
+
+====== ================
+Opcode Instruction Name
+====== ================
+50     call
+51     ret
+====== ================
+
+Non-Operational Instructions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+These instructions do not actually do anything for the code.
+However, the 'break' instruction can be used to notify a debugger that a
+breakpoint has been reached.
+
+====== ================
+Opcode Instruction Name
+====== ================
+60     nop
+61     break
+====== ================
