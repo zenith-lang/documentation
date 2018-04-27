@@ -105,6 +105,7 @@ Symbol Name Required? Purpose
 _start      Yes       Defines where the execution of the code should start.
 _stack      No        Becomes a pointer to the base of the value stack.
 _pc_stack   No        Becomes a pointer to the base of the call stack.
+_program    No        Becomes a pointer to the first page of the program.
 =========== ========= ==========================================================
 
 Symbol Table Index Page
