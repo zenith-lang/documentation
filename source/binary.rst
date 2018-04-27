@@ -83,19 +83,29 @@ The attributes are defined as follows:
 Most programs will not require more than one header page, since each header page
 can handle 1920 pages in the body of the program.
 
-Symbol Table
-^^^^^^^^^^^^
+Symbol Tables
+^^^^^^^^^^^^^
 
 The symbol table contains the addresses of all symbols that were in the original
 source code.
 They are organized to be optimial for a binary search tree so that the names of
 symbols can be looked up from an address as quickly as possible.
 
-The runtime does not directly use this symbol table (except to find the main
-method), but some code will rely on this symbol table being loaded into memory
+The runtime does not directly use this symbol table (except to find the special
+symbols), but some code will rely on this symbol table being loaded into memory
 for the lookup of symbols.
 One example of this would be to generate stack traces from the addresses
 contained on the stack.
+
+Special Symbols
+^^^^^^^^^^^^^^^
+=========== ========= ==========================================================
+Symbol Name Required? Purpose
+=========== ========= ==========================================================
+_start      Yes       Defines where the execution of the code should start.
+_stack      No        Becomes a pointer to the base of the value stack.
+_pc_stack   No        Becomes a pointer to the base of the call stack.
+=========== ========= ==========================================================
 
 Symbol Table Index Page
 ^^^^^^^^^^^^^^^^^^^^^^^
