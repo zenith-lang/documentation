@@ -328,7 +328,7 @@ Stack Before Stack After
 
 Adds a value to the top of the stack.
 
-push_i
+push_i <value>
 ^^^^^^
 
 ============ ===========
@@ -339,7 +339,7 @@ Stack Before Stack After
 
 Adds a value to the top of the stack.
 
-push_l
+push_l <value>
 ^^^^^^
 
 ============ ===========
@@ -350,7 +350,7 @@ Stack Before Stack After
 
 Adds a value to the top of the stack.
 
-push_s
+push_s <value>
 ^^^^^^
 
 ============ ===========
