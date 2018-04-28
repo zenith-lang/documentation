@@ -193,7 +193,8 @@ Bitwise Instructions
 ^^^^^^^^^^^^^^^^^^^^
 
 The following instructions all consume the top two values from the stack, and
-return the value as a single value onto the top of the stack.
+return the value as a single value onto the top of the stack, except 'not',
+which only consumes the one top value.
 
 ====== ================
 Opcode Instruction Name
