@@ -7,3 +7,4 @@ Welcome to Zenith's documentation!
    
    binary.rst
    environment.rst
+   base-language.rst
