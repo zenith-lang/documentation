@@ -293,9 +293,15 @@ These instructions do not actually do anything for the code.
 However, the 'break' instruction can be used to notify a debugger that a
 breakpoint has been reached.
 
+The 'stub' instruction is used internally by the bootstrap compiler to call
+native code that had to be implemented in C since there is not a compiler when
+compiling the first version.
+User code should never use the 'stub' instruction.
+
 ====== ================
 Opcode Instruction Name
 ====== ================
 60     nop
 61     break
+62     stub
 ====== ================
