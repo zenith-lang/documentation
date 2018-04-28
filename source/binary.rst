@@ -274,11 +274,16 @@ stack, and removes that value.
 The 'ret' instruction jumps to the address on the top of the call stack, then
 removes that entry.
 
+The 'syscall' instruction calls the operating system to do a specific task.
+The top value on the stack is used for a number that identifies which call to
+the system should be made.
+
 ====== ================
 Opcode Instruction Name
 ====== ================
 50     call
 51     ret
+52     syscall
 ====== ================
 
 Non-Operational Instructions
